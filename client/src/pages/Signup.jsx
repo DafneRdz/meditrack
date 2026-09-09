@@ -15,7 +15,7 @@ function Signup() {
     e.preventDefault();
     setError('');
     try {
-      const res = await axios.post('http://localhost:5050/api/auth/signup', {
+      const res = await axios.post('https://meditrack-czy4.onrender.com/api/auth/signup', {
         name,
         email,
         password
