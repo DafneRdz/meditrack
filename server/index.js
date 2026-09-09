@@ -23,11 +23,13 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 
 app.post('/api/auth/signup', async (req, res) => {
+  console.log("Signup payload received:", req.body); // Check incoming data
   try {
-    // signup logic...
+    // ... your signup logic ...
   } catch (error) {
-    console.error("SIGNUP ERROR:", error); // <-- Add this line!
-    res.status(500).json({ message: "Server error" });
+    console.error("FULL SIGNUP ERROR:", error.message); // Print specific error string
+    console.error(error.stack); // Print full stack trace
+    res.status(500).json({ error: error.message });
   }
 });
 
