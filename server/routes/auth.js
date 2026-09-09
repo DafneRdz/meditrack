@@ -16,6 +16,15 @@ router.post('/signup', async (req, res) => {
       return res.status(400).json({ error: 'Email already registered' });
     }
 
+app.post('/api/auth/signup', async (req, res) => {
+  try {
+    // signup logic...
+  } catch (error) {
+    console.error("SIGNUP ERROR:", error); // <-- Add this line!
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -24,6 +33,8 @@ router.post('/signup', async (req, res) => {
       'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id, name, email',
       [name, email, hashedPassword]
     );
+
+
 
     // Create a token
     const token = jwt.sign({ userId: newUser.rows[0].id }, process.env.JWT_SECRET, { expiresIn: '7d' });
