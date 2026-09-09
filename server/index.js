@@ -6,6 +6,11 @@ const authRoutes = require('./routes/auth');
 const healthRoutes = require('./routes/health');
 
 const app = express();
+// Log EVERY incoming request to Render logs
+app.use((req, res, next) => {
+  console.log(`[REQUEST] ${req.method} ${req.url}`);
+  next();
+});
 
 app.use(cors());
 app.use(express.json());
