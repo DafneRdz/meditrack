@@ -3,7 +3,24 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const pool = require('../db/db');
 
+const fs = require('fs');
+const path = require('path'); //Add this line
+
+//Create an absolute path to 'users.json' in the exact same folder as this JS file
+const jsonPath = path.join(__dirname, 'users.json');
+
+//Read from the file
+const data = fs.readFileSync(jsonPath, 'utf8');
+
+//Write to the file
+fs.writeFileSync(jsonPath, JSON.stringify(useSyncExternalStore, null, 2));
+
+// Navigates into the 'data' subfolder
+const jsonPath = path.join(__dirname, 'data', 'users.json');
 const router = express.Router();
+
+// Moves up one directory '..' then accesses users.json
+const jsonPath = path.join(__dirname, '..', 'users.json');
 
 // SIGNUP
 router.post('/signup', async (req, res) => {
