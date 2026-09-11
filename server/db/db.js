@@ -8,7 +8,7 @@ const pool = new Pool({
 // Automatically create tables on server start
 const initDb = async () => {
   try {
-    // Users table
+    // 1. Create users table
     await pool.query(`
       CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
@@ -19,20 +19,25 @@ const initDb = async () => {
       );
     `);
 
-    // Entries / Medications table (Adjust column names to match your app)
+    // 2. Create health table (matches AddLog.js fields)
     await pool.query(`
-      CREATE TABLE IF NOT EXISTS entries (
+      CREATE TABLE IF NOT EXISTS health (
         id SERIAL PRIMARY KEY,
         user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-        title VARCHAR(255) NOT NULL,
+        symptoms TEXT,
+        heart_rate INTEGER,
+        blood_pressure_systolic INTEGER,
+        blood_pressure_diastolic INTEGER,
+        temperature NUMERIC(5, 2),
+        weight NUMERIC(5, 2),
         notes TEXT,
-        date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
     `);
 
-    console.log("Database tables initialized successfully!");
+    console.log("Database tables (users & health) initialized successfully!");
   } catch (err) {
-    console.error("Error creating database tables:", err);
+    console.error("Error initializing database tables:", err);
   }
 };
 

@@ -16,11 +16,13 @@ function AddLog() {
   const { token } = useAuth();
   const navigate = useNavigate();
 
+  const API_URL = process.env.REACT_APP_API_URL || 'https://meditrack-czy4.onrender.com';
+
   async function handleSubmit(e) {
     e.preventDefault();
     setError('');
     try {
-      await axios.post('http://localhost:5050/api/health', {
+      await axios.post('https://meditrack-czy4.onrender.com/api/health', {
         symptoms,
         heart_rate: heartRate || null,
         blood_pressure_systolic: systolic || null,
