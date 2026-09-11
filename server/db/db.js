@@ -5,7 +5,6 @@ const pool = new Pool({
   ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
 });
 
-// Automatically create tables on server start
 const initDb = async () => {
   try {
     // 1. Create users table
@@ -19,9 +18,9 @@ const initDb = async () => {
       );
     `);
 
-    // 2. Create health table (matches AddLog.js fields)
+    // 2. Create health_logs table
     await pool.query(`
-      CREATE TABLE IF NOT EXISTS health (
+      CREATE TABLE IF NOT EXISTS health_logs (
         id SERIAL PRIMARY KEY,
         user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
         symptoms TEXT,
@@ -35,7 +34,7 @@ const initDb = async () => {
       );
     `);
 
-    console.log("Database tables (users & health) initialized successfully!");
+    console.log("Database tables (users & health_logs) initialized successfully!");
   } catch (err) {
     console.error("Error initializing database tables:", err);
   }
