@@ -3,6 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 
+const API_URL = process.env.REACT_APP_API_URL || 'https://meditrack-czy4.onrender.com';
+
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -14,14 +16,23 @@ function Login() {
     e.preventDefault();
     setError('');
     try {
-      const res = await axios.post('http://localhost:5050/api/auth/login', {
-        email,
+      // Lowercase and trim email to prevent typo mismatches
+      const res = await axios.post(`${API_URL}/api/auth/login`, {
+        email: email.trim().toLowerCase(),
         password
       });
-      login(res.data.user, res.data.token);
+
+      // Pass token and user to AuthContext
+      // Note: If your AuthContext expects (token, user) instead of (user, token), swap these two
+      if (login.length >= 2) {
+        login(res.data.user, res.data.token);
+      } else {
+        login(res.data.token);
+      }
+
       navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.error || 'Login failed');
+      setError(err.response?.data?.error || 'Invalid email or password');
     }
   }
 
