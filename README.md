@@ -54,7 +54,7 @@ JWT_SECRET=your_secret_key
 cd ../client
 npm install
 npm start
-5. Open `[http://localhost:3000](https://meditrack-heykbdnx3-stream-proj.vercel.app/login)` in your browser
+5. Open `(https://meditrack-heykbdnx3-stream-proj.vercel.app/login)` in your browser
 
 ## Author
 Dafne Rodriguez — [GitHub](https://github.com/DafneRdz)
