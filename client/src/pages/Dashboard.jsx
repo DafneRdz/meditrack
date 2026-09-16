@@ -5,23 +5,28 @@ import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
 import HealthChart from '../components/HealthChart';
 
+const API_URL = process.env.REACT_APP_API_URL || 'https://meditrack-czy4.onrender.com';
+
 function Dashboard() {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const { token } = useAuth();
 
   useEffect(() => {
-    fetchLogs();
-  }, []);
+    if (token) {
+      fetchLogs();
+    }
+  }, [token]); // Re-run when token is available
 
   async function fetchLogs() {
     try {
-      const res = await axios.get('http://localhost:5050/api/health', {
+      setLoading(true);
+      const res = await axios.get(`${API_URL}/api/health`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setLogs(res.data);
     } catch (err) {
-      console.error(err);
+      console.error("Fetch logs error:", err.response?.data || err.message);
     } finally {
       setLoading(false);
     }
@@ -53,7 +58,9 @@ function Dashboard() {
                 padding: 16,
                 marginBottom: 12
               }}>
-                <strong>{new Date(log.log_date).toLocaleDateString()}</strong>
+                <strong>
+                  {new Date(log.created_at || log.log_date).toLocaleDateString()}
+                </strong>
                 <p>Symptoms: {log.symptoms || 'None reported'}</p>
                 <p>
                   Heart Rate: {log.heart_rate || '—'} bpm |{' '}
