@@ -1,7 +1,8 @@
 # Meditrack
 Live Demo: https://meditrack-nmzw3twxf-stream-proj.vercel.app/login
--Dummy UserAccount: demo@meditrack.com
--Password: Password123!
+
+- **Dummy UserAccount: demo@meditrack.com
+- **Password: Password123!
 
 Meditrack is a full-stack web application designed for personal health logging and monitoring. Users can track daily vital metrics, record symptoms, write personal health notes, and view historical trends through a visual dashboard.
 
