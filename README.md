@@ -1,60 +1,53 @@
-# MediTrack — Patient Health Dashboard
+# Meditrack
 
-A full-stack web application that enables patients to log symptoms, track vital signs, and visualize health trends over time.
-
-## Features
-- Secure user authentication (signup/login) with encrypted passwords
-- Log daily health entries including symptoms, heart rate, blood pressure, temperature, and weight
-- Interactive charts to visualize health trends over time
-- Role-based access control for patients and providers
-- Protected routes on both frontend and backend
-- Responsive design across desktop and mobile
+Meditrack is a full-stack web application designed for personal health logging and monitoring. Users can track daily vital metrics, record symptoms, write personal health notes, and view historical trends through a visual dashboard.
 
 ## Tech Stack
-| Layer | Technology |
-|---|---|
-| Frontend | React, React Router, Recharts |
-| Backend | Node.js, Express.js |
-| Database | PostgreSQL |
-| Authentication | bcrypt, JSON Web Tokens (JWT) |
-| Other | Axios, CORS, dotenv |
 
-## Getting Started
+- **Frontend:** React, React Router, Axios
+- **Backend:** Node.js, Express.js
+- **Database:** PostgreSQL (`pg` driver)
+- **Authentication:** JSON Web Tokens (JWT), bcryptjs
+- **Hosting:** Vercel (Frontend), Render (Backend API & PostgreSQL Database)
 
-### Prerequisites
-- Node.js v18+
-- PostgreSQL
+## Features
 
-### Setup
+- **Authentication System:** Secure sign-up and login with password hashing and JWT token management.
+- **Health Logging:** Form interface to record symptoms, heart rate, systolic/diastolic blood pressure, body temperature, weight, and general notes.
+- **Visual Dashboard:** Interactive dashboard displaying recent health logs alongside visual trends.
+- **Automated Database Setup:** Programmatic schema initialization on server startup (`initDb`) ensuring required tables are created automatically without manual database scripting.
 
-1. Clone the repository
-git clone https://github.com/DafneRdz/meditrack.git
-cd meditrack
+## Database Schema
 
-2. Set up the database
-psql postgres
-CREATE DATABASE meditrack;
-\c meditrack
- 
- Then paste the contents of `server/db/schema.sql` to create the tables.
+The PostgreSQL database consists of two primary tables linked by a foreign key constraint:
 
-3. Set up the backend
-cd server
-npm install
-  
-  Create a `.env` file in the `server` folder:
+### `users`
+- `id` (SERIAL PRIMARY KEY)
+- `name` (VARCHAR(255) NOT NULL)
+- `email` (VARCHAR(255) UNIQUE NOT NULL)
+- `password` (VARCHAR(255) NOT NULL)
+- `created_at` (TIMESTAMP DEFAULT CURRENT_TIMESTAMP)
+
+### `health_logs`
+- `id` (SERIAL PRIMARY KEY)
+- `user_id` (INTEGER REFERENCES users(id) ON DELETE CASCADE)
+- `symptoms` (TEXT)
+- `heart_rate` (INTEGER)
+- `blood_pressure_systolic` (INTEGER)
+- `blood_pressure_diastolic` (INTEGER)
+- `temperature` (NUMERIC(5, 2))
+- `weight` (NUMERIC(5, 2))
+- `notes` (TEXT)
+- `created_at` (TIMESTAMP DEFAULT CURRENT_TIMESTAMP)
+
+## Environment Variables
+
+To run this application locally or in deployment, configure the following environment variables.
+
+### Backend (`/server/.env`)
+
+```env
 PORT=5050
-DATABASE_URL=postgresql://localhost:5432/meditrack
-JWT_SECRET=your_secret_key
- 
- Start the server:
- node index.js
- 
- 4. Set up the frontend
-cd ../client
-npm install
-npm start
-5. Open `(https://meditrack-heykbdnx3-stream-proj.vercel.app/login)` in your browser
-
-## Author
+DATABASE_URL=postgresql://user:password@hostname:5432/dbname?ssl=true
+JWT_SECRET=your_jwt_secret_key
 Dafne Rodriguez — [GitHub](https://github.com/DafneRdz)
